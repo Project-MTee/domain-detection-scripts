@@ -25,7 +25,9 @@ If you don't have such files prepared, you can use `01_concatenate_files.py` to 
 ### The packages used to run the script were following:
 
 `transformers==4.9.2`
+
 `datasets=1.11.0`
+
 `jsonlines==2.0.0`
 
 
