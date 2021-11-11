@@ -148,12 +148,12 @@ def cut_and_tokenize(args):
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="""This script takes the specified amount of sentences from each domain-lang pair for training data. It prefers parallel data sentences but if there's not enough it takes more from monolingual data. The sentences are tokenized and saved as jsonlines to the specified folder. NB! Note that: 1) The script doesn't do any shuffling of the data; 2) The limits don't apply to validation and test data, in case of that all data is taken.""")
 
-    parser.add_argument("--parallel_data_dir", type=str, help="path to parallel data files")
-    parser.add_argument("--mono_data_dir", type=str, help="path mono data files")
-    parser.add_argument("--out_dir", type=str, help="folder where tokenized data is saved")
-    parser.add_argument("--tokenizer", type=str, help="name of the tokenizer in HuggingFace")
-    parser.add_argument("--limit", type=int, help="train sentences limit for domain-lang pair")
-    parser.add_argument("--custom_limit", nargs="*", action = CustomLimit, help="key-value pairs of domain-langs and sentence limits, for example 'general-et=15000'")
+    parser.add_argument("--parallel_data_dir", type=str, help="Path to parallel data files.")
+    parser.add_argument("--mono_data_dir", type=str, help="Path to mono data files.")
+    parser.add_argument("--out_dir", type=str, help="Folder where tokenized data is saved.")
+    parser.add_argument("--tokenizer", type=str, help="Name of the tokenizer in HuggingFace.")
+    parser.add_argument("--limit", type=int, help="Train sentences limit for domain-lang pair.")
+    parser.add_argument("--custom_limit", nargs="*", action = CustomLimit, help="Key-value pairs of domain-langs and sentence limits, for example 'general-et=15000'.")
 
     args = parser.parse_args()
     
