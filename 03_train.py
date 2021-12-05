@@ -16,7 +16,7 @@ def train(args):
     from transformers import XLMRobertaForSequenceClassification, Trainer, TrainingArguments, AutoTokenizer
     from datasets import load_dataset
 
-    dataset = load_dataset("json", data_files= {"valid": args.valid_file, "train": args.train_file}, cache_dir=args.cache)
+    dataset = load_dataset("json", data_files={"valid": args.valid_file, "train": args.train_file}, cache_dir=args.cache)
 
     tokenizer = AutoTokenizer.from_pretrained(args.tokenizer)
 
@@ -33,7 +33,7 @@ def train(args):
         lr_scheduler_type=args.lr_scheduler_type,
         weight_decay=args.weight_decay,
         warmup_ratio=args.warmup_ratio,
-        logging_strategy='steps',
+        logging_strategy="steps",
         logging_steps=args.logging_steps,
         save_strategy="steps",
         save_steps=args.save_steps,
@@ -47,7 +47,7 @@ def train(args):
         import wandb
         wandb.login()
         os.environ["WANDB_PROJECT"] = "Domain_detection"
-        training_args.report_to = ["wandb"] #¯\_(ツ)_/¯
+        training_args.report_to = ["wandb"]
         training_args.run_name = args.run_name
 
         print(training_args.report_to)

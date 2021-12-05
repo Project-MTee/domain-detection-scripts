@@ -12,7 +12,7 @@ python 02_cut_and_tokenize.py \
     --out_dir $3 \
     --tokenizer xlm-roberta-base \
     --limit 202733 \
-    --custom_limit crisis-et=570495 military-et 321490 military-en 321490
+    --custom_limit crisis-et=570495 military-et=321490 military-en=321490
 
 train_data_path="${3}/train.tok"
 valid_data_path="${3}/valid.tok"

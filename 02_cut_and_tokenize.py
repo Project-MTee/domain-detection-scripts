@@ -1,7 +1,6 @@
 import os
 import argparse
 import jsonlines
-from random import shuffle
 
 class CustomLimit(argparse.Action):
     def __call__( self , parser, namespace,
@@ -52,7 +51,7 @@ def get_domain_lang_limits(args):
 
 def get_domain_lang_mono(mono_files, domain, lang):
     for file in mono_files:
-        if domain in file and file[-3:] == lang:
+        if domain in file and file[-2:] == lang:
             return file
     
 
@@ -106,7 +105,6 @@ def cut_and_tokenize(args):
 
     limits_dict = get_domain_lang_limits(args)
 
-
     parallel_files = os.listdir(args.parallel_data_dir)
     mono_files = os.listdir(args.mono_data_dir)
 
@@ -116,14 +114,16 @@ def cut_and_tokenize(args):
 
     for file in parallel_files:
         filepath = os.path.join(args.parallel_data_dir, file)
-        split = get_split(filepath)
-        domain = get_domain(filepath)
-        lang = get_lang(filepath)
+        split = get_split(file)
+        domain = get_domain(file)
+        lang = get_lang(file)
         limit = limits_dict[domain + "-" + lang]
+
+        print("Processing file {} with domain \"{}\", split \"{}\" and lang \"{}\".".format(filepath, domain, split, lang))
 
         if split == "train":
             snip = snip_from_file(filepath, domain, lang, limit)
-            print("Snipped {} sentences from {}.".format(len(snip), filepath))
+            print("Snipped {} sentences.".format(len(snip)))
 
             tokenize_and_write_to_file(train_out, snip, tokenizer)
 
@@ -131,19 +131,24 @@ def cut_and_tokenize(args):
 
             if missing > 0:
                 mono_file = get_domain_lang_mono(mono_files, domain, lang)
-                print("Snipping {} from \"{}-{}\" data from mono file {}".format(missing, domain, lang, mono_file))
-                        
-                snip = snip_from_file(mono_file, domain, lang, missing)
+                mono_filepath = os.path.join(args.mono_data_dir, mono_file)
+
+                snip = snip_from_file(mono_filepath, domain, lang, missing)
+                print("Snipped {} more for \"{}-{}\" train data from mono file {}.".format(missing, domain, lang, mono_filepath))
 
                 tokenize_and_write_to_file(train_out, snip, tokenizer)
         
         elif split == "test":
             snip = take_all(filepath, domain, lang)
-            tokenize_and_write_to_file(test_out, snip,  tokenizer)
+            tokenize_and_write_to_file(test_out, snip, tokenizer)
         
         elif split == "valid":
             snip = take_all(filepath, domain, lang)
-            tokenize_and_write_to_file(valid_out, snip,  tokenizer)
+            tokenize_and_write_to_file(valid_out, snip, tokenizer)
+
+    train_out.close()
+    valid_out.close()
+    test_out.close()
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="""This script takes the specified amount of sentences from each domain-lang pair for training data. It prefers parallel data sentences but if there's not enough it takes more from monolingual data. The sentences are tokenized and saved as jsonlines to the specified folder. NB! Note that: 1) The script doesn't do any shuffling of the data; 2) The limits don't apply to validation and test data, in case of that all data is taken.""")

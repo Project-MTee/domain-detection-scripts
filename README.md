@@ -4,7 +4,7 @@
 
 Run `main.sh`. It collects necessary data, tokenizes it, and trains the model by calling `02_cut_and_tokenize.py` and `03_train.py`.
 
-The script assumes that the data is located in text files, one domain and one language per file and one sentence per line. Files from monolingual corpus and parallel corpus should be in separate folders. Filenames should indicate to which domain (`general|crisis|legal|military`) and language (`et|en|ru|de`) its content belongs to. In case the data is from parallel corpus, split (`train|valid|test`) should also be specified. For example, you can use following folder structure and file naming:
+The script assumes that the data is located in text files, one domain and one language per file and one sentence per line. Files from monolingual corpus and parallel corpus should be in separate folders. Filenames should indicate to which domain (`general|crisis|legal|military`) and language (`et|en|ru|de`) its content belongs. In case the data is from parallel corpus, split (`train|valid|test`) should also be specified. For example, you can use following folder structure and file naming:
 
     data
     |———parallel_data
@@ -26,7 +26,11 @@ If you don't have such files prepared, you can use `01_concatenate_files.py` to 
 
 `transformers==4.9.2`
 
-`datasets=1.11.0`
+`datasets==1.11.0`
+
+`scikit-learn==0.24.2`
+
+`torch==1.9.0`
 
 `jsonlines==2.0.0`
 

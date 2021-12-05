@@ -52,16 +52,13 @@ def iterate_data(args):
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="""This script concatenates various monolingual and parallel data files by split, domain, and language, in order to make it easier to use this data for domain detection task. This script assumes that file path indicates the domain, language and split of the data (split is not required). Concatenated files follow naming convention <type>.<domain>.<split>.<lang>. It doesn't do any shuffling of the data.""")
 
-    parser.add_argument("--in_path", type=str, help="Path to directory containing the data files (can be in subdirectories).")
+    parser.add_argument("--in_path", type=str, help="Path to directory containing the data files (which can be in subdirectories).")
     parser.add_argument("--out_path", type=str, help="Directory where concatenated files are saved.")
     parser.add_argument("--type", type=str, help="Must be either \"parallel\" or \"mono\"; used for naming files.")
     parser.add_argument("--required_subdir", type=str, default="v2", help="In case there are multiple versions of parallel data available, use this to specify from which subdirectory it should be taken.")
 
 
     args = parser.parse_args()
-
-    print("subdir")
-    print(args.required_subdir)
 
     assert args.type == "parallel" or args.type == "mono"
     
